@@ -20,11 +20,11 @@ public class PositiveTest {
     @BeforeEach
     void setUp() {
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--no-sandbox");
         options.addArguments("--headless");
-        options.addArguments("--remote-allow-origins=*");
-        driver = new ChromeDriver();
+        driver = new ChromeDriver(options);
     }
 
     @AfterEach
@@ -36,12 +36,12 @@ public class PositiveTest {
     @Test
     void shouldTestPositivePath() {
         driver.get("http://localhost:9999/");
-        driver.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Аглая");
-        driver.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79110138331");
-        driver.findElement(By.cssSelector("[data-test-id='agreement'] input")).click();
-        driver.findElement(By.cssSelector("button__text")).click();
+        driver.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Имярек Имяреков");
+        driver.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79999999999");
+        driver.findElement(By.cssSelector("[data-test-id=agreement]")).click();
+        driver.findElement(By.cssSelector("button")).click();
         String expected = "Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
-        String actual = driver.findElement(By.cssSelector("[data-test-id='order-success']")).getText().trim();
+        String actual = driver.findElement(By.cssSelector("[data-test-id=order-success]")).getText().trim();
         assertEquals(expected, actual);
     }
 }
